@@ -7,9 +7,7 @@ import {createDrawerNavigator} from "@react-navigation/drawer";
 import {AuthContext} from "./utils/AuthContext";
 import { loginReducer, initialState } from "./utils/authReducer";
 import { useFonts, Roboto_300Light, Roboto_500Medium, Roboto_700Bold } from "@expo-google-fonts/roboto";
-import * as UserFuncs from "./services/userFetchs"
-
-
+import * as UserFuncs from "./services/userFetchs";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -95,12 +93,12 @@ const TabsScreen = () =>(
     })}
   >
    <Tabs.Group
-    screenOptions={{headerShown:false}}
+    screenOptions={{headerShown:false,  unmountOnBlur: true}}
   >
     <Tabs.Screen name="Home" component={HomeScreen} />
     <Tabs.Screen name="Food" component={FoodScreen} />
     <Tabs.Screen name="Goals" component={GoalScreen} />
-    <Tabs.Screen name="Community" component={CommunityScreen} />
+    
     <Tabs.Screen name="More" component={MoreScreen} />
   </Tabs.Group>
   </Tabs.Navigator>
@@ -132,10 +130,13 @@ function App() {
       },
       updateGoals: async (usertoken, metas) => {
         let goals = await UserFuncs.updateUserGoals(usertoken, metas);
-        dispatch({type: 'updateMetas', metas:goals});
+        dispatch({type: 'updateMetas', metas});
       },
       getState:()=>{
         return loginState;
+      },
+      updateScreens:async ()=>{
+        dispatch({type: 'update', updateScreens:!loginState.updateScreens});
       }
    }), []);
   React.useEffect(()=>{

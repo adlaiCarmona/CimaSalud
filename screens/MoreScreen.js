@@ -60,7 +60,10 @@ const More = ({navigation}) => {
 
 
         if(days)
-            days.forEach((day) => {dates[day.fecha.replace("T00:00:00.000Z", "")] = {marked:true} });
+            days.forEach((day) => {
+                dates[day.fecha.replace("T00:00:00.000Z", "")] = {marked:true} 
+            });
+            setMarkedDates(dates);
     }
 
     const viewItems = (title) => {
@@ -390,7 +393,7 @@ const More = ({navigation}) => {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                //Alert.alert('');
                 setModalVisible(!modalVisible);
             }}>
                 <View style={styles.centeredView}>
