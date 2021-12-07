@@ -62,7 +62,15 @@ const Home = ({ navigation }) => {
         { text: 'Carbs', val: 0, meta: 0 },
         { text: 'Grasas', val: 0, meta: 0 },
     ]);
-    
+
+    const [suggestion, setSuggestion] = useState([
+        'Pollo con Arroz',
+        'Yogurt griego con Frutas',
+        'Omelette con espinacas y champiñones',
+        'Filete de Pescado a la Plancha',
+        'Ceviche de Atún'
+    ]);
+    const [numSuggest, setNumSuggest] = useState(0);
     
     const getInfo = async () => {
         let i=0;
@@ -394,8 +402,12 @@ const Home = ({ navigation }) => {
                             onPress={() => {
                                 Alert.alert(
                                     'Sugerencia',
-                                    'Pollo con Arroz',
+                                    suggestion[numSuggest],
                                 );
+                                if(numSuggest != suggestion.length - 1)
+                                    setNumSuggest(numSuggest + 1);
+                                else   
+                                    setNumSuggest(0);
                             }}
                         />
                         <TouchableImg
