@@ -46,13 +46,33 @@ const Home = ({ navigation }) => {
         setHasPermission(status === 'granted');
         })();
     }, []);
-    const handleBarCodeScanned = ({ type, data }) => {
-        setScanned(true);
-        console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-        // Falta peticion a la base de datos
-        //getFoodByCode(token, data.toString());
-
+    const handleBarCodeScanned = async ({ type, data }) => {
         setIsScanning(false);
+        setModalVisible(false);
+        
+        let food = await FoodFuncs.getFoodByCode(token, data);
+
+        console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+        console.log(food);
+        if( food !== null ){
+            switch (selectedMeal) {
+                case 'desayuno':
+                    await DayFuncs.updateDayBreakFast(token,Dates.getToday(),food.id);              
+                    break;
+                case 'almuerzo':
+                    await DayFuncs.updateDayLunch(token,Dates.getToday(),food.id);              
+                    break;
+                case 'cena':
+                    await DayFuncs.updateDayDinner(token,Dates.getToday(),food.id);              
+                    break;
+                case 'snack':
+                    await DayFuncs.updateDaySnacks(token,Dates.getToday(),food.id);              
+                    break;
+            
+                default:
+                    break;
+            }
+        }
     };
     const [showing, setShow] = React.useState({
         showBreakFast: false,
